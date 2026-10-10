@@ -4,7 +4,6 @@ A Python software using Guizero that used www.jw.org online Bible to make links 
 # Version History
 
 v1.0 - Official release - Released - 3/25/25
-v1.0.1 - _(upcoming)_ - Language URL - ?/?/?
 
 # How to use
 
@@ -12,4 +11,4 @@ On the start page, you are asked for a Bible book, chapter, verse(s), edition, a
 
 # Legal
 
-The website we use, www.jw.org, is NOT owned by us. It is a free public website and we use it, not for monetization or selling, but as a project and tool. This application is NOT under copyright, but do not reproduce it. The original version was made by The0neWhoWatches on Github.
+The website we use, www.jw.org, is NOT owned by me. It is a free public website and we use it, not for monetization or selling, but as a project and tool. This application is NOT under copyright, but do not reproduce it. The original version was made by me on Github.
