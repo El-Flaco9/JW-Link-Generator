@@ -12,7 +12,7 @@ def main():
   def open_jw_org():
     webbrowser.open("https://www.jw.org")
   def open_git():
-    webbrowser.open("https://github.com/The0neWhoWatches/JW-Link-Generator")
+    webbrowser.open("https://github.com/El-Flaco9/JW-Link-Generator")
   p = Picture(container, image="jw_logo.png", height=100, width=100, align="left")
   p.when_clicked = open_jw_org
   title_box = guizero.Box(container, align="right", width="fill")
@@ -43,11 +43,21 @@ def main():
   TO_VERSE.bg = bC
   TO_VERSE.text_color = tC
   Text(A,text="Choose Bible Edition:",size=15, color=tC)
-  edition = Combo(A, options=["New World Translation (2013)","New World Translation Study Edition","King James Version","American Standard Version","Rotherham","New World Translation (1984)"])
+  translations_list = {
+      "New World Translation (2013)": {"link": "nwt"},
+      "New World Translation Study Edition": {"link": "study-bible"},
+      "King James Version": {"link": "king-james-version"},
+      "American Standard Version": {"link": "american-standard-version"},
+      "Emphasized Bible (Rotherham)": {"link": "rotherham"},
+      "New World Translation (1984)": {"link": "bi12"},
+      "The Kingdom Interlinear Translation of the Greek Scriptures": {"link": "kingdom-interlinear-greek-translation"},
+      "The Bible in Living English": {"link": "byington"}
+  }
+  edition = Combo(A, options=list(translations_list.keys()))
   edition.bg = bC
   edition.text_color = tC
   Text(A,text="Choose Language:",size=15, color=tC)
-  lang = Combo(A, options=['Local','English', 'Spanish'])
+  lang = Combo(A, options=['Local','English'])
   lang.bg = bC
   lang.text_color = tC
   Text(A,text=' ',size=10)
@@ -55,44 +65,39 @@ def main():
     ED = ''
     cLink = ''
     vLink = ''
+    global ER
     ER = False
     tLink= ''
+    def errmsg(rsn):
+        A.error("Error",text=rsn)
+        global ER
+        ER = True
     if books.value == '':
-      A.error("Error", "Please select a book")
-      ER = True
+      errmsg("Please select a book")
     elif CHAPTER.value == '':
-      A.error("Error", "Please enter a chapter")
-      ER = True
+      errmsg("Please enter a chapter")
     elif VERSE.value == '':
-      A.error("Error", "Please enter a verse")
-      ER = True
-    elif edition.value == '':
-      A.error("Error", "Please select an edition")
-      ER = True
-    elif lang.value == '':
-      A.error("Error", "Please select a language")
-      ER = True
+      errmsg("Please enter a verse")
+    if not CHAPTER.value.isdigit():
+        errmsg("Please enter a number for chapter")
+    if not VERSE.value.isdigit():
+        errmsg("Please enter a number for verse")
+    if not TO_VERSE.value.isdigit():
+        if TO_VERSE.value == '':
+            pass
+        else:
+            errmsg("Please enter a number for to-verse")
+    #elif edition.value == '':
+    #  errmsg("Please select an edition")
+    #elif lang.value == '':
+    #  errmsg("Please select a language")
     link='https://www.jw.org/en/library/bible/'
-    if edition.value == 'New World Translation (2013)':
-      ED = "nwt"
-    if edition.value == 'New World Translation Study Edition':
-      ED = "study-bible"
-    if edition.value == 'King James Version':
-      ED = "king-james-version"
-    if edition.value == 'American Standard Version':
-      ED = "american-standard-version"
-    if edition.value == 'Rotherham':
-      ED = "rotherham"
-    if edition.value == 'New World Translation (1984)':
-      ED = "bi12"
+    if edition.value in translations_list.keys():
+        ED = translations_list[edition.value].get('link')
+    else:
+        errmsg("An unexpected error occurred, try to select a translation")
     selected_book = books.value if books.value else ""
     selected_book = str(selected_book).lower()
-    if CHAPTER.value == str:
-      A.error(title="Error", text="Please enter a number for Chapter")
-      ER = True
-    if VERSE.value == str:
-      A.error(title="Error", text="Please enter a number for Verse")
-      ER = True
     count = 1
     for i in bible_books:
       if i == books.value:
@@ -110,14 +115,13 @@ def main():
     link = link + str(ED) + '/books/' + selected_book + '/' + str(CHAPTER.value) + '/#v' + str(count) + str(cLink) + str(vLink)
     if TO_VERSE.value != '':
       if TO_VERSE.value == str:
-        A.error(title="Error", text="Please enter a number for To Verse")
-        ER = True
+        errmsg("Please enter a number for To Verse")
       if len(str(TO_VERSE.value)) == 2:
         tLink = "0" + str(TO_VERSE.value)
       if len(str(TO_VERSE.value)) == 1:
         tLink = "00" + str(TO_VERSE.value)
       link = link + '-v' + str(count) + str(cLink) + str(tLink)
-    if ER == False:
+    if ER is False:
       W = Window(A, title="Generated Link", width=400, height=400)
       W.bg = gC
       Text(W, text="Generated Link", size=30, color=tC)
@@ -129,9 +133,10 @@ def main():
       o = PushButton(W, text="Open", command=open_link, args=[link])
       o.bg = bC
       o.text_color = tC
-    else:
-      ER = False
-  gl = PushButton(A,text='Generate Link',command=generate_link)
+    if ER is True:
+        print(str(ER))
+        pass
+  gl = PushButton(A,text='Generate JW.ORG Link',command=generate_link)
   gl.bg = bC
   gl.text_color = tC
   def example():
