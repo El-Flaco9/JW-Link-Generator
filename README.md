@@ -11,6 +11,11 @@ v1.1 - October 2026 Update - Released - 10/10/26
 - Added link clarification
 - New Bible translations: 'The Kingdom Interlinear Translation of the Greek Scriptures' and 'The Bible in Living English'
 - Fixed non-number inputs for chapters, verse, and to-verse
+v1.2 - October 2026 Update 2 - Released - 10/11/26
+- Fixed UI
+- Fixed Local language bug (removed Local)
+- Added JW Library Link Generator
+- Added clarification to 1984 New World Translation (Reference)
 
 # How to use
 
