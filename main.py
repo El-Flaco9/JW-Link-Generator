@@ -24,8 +24,75 @@ def main():
   Text(A, text="Enter Bible Book:",size=15, color=tC)
   def on_select(item):
     BOOK = item
-  bible_books = ["Genesis","Exodus","Leviticus","Numbers","Deuteronomy","Joshua","Judges","Ruth", "1 Samuel","2 Samuel","1 Kings","2 Kings","1 Chronicles","2 Chronicles","Ezra","Nehemiah","Esther","Job","Psalms","Proverbs","Ecclesiastes","Song of Solomon","Isaiah","Jeremiah","Lamentations","Ezekiel","Daniel","Hosea","Joel","Amos","Obadiah","Jonah","Micah","Nahum","Habakkuk","Zephaniah","Haggai","Zechariah","Malachi","Matthew","Mark","Luke","John","Acts","Romans","1 Corinthians","2 Corinthians","Galatians","Ephesians","Philippians","Colossians","1 Thessalonians","2 Thessalonians","1 Timothy","2 Timothy", "Titus","Philemon","Hebrews","James","1 Peter","2 Peter","1 John","2 John","3 John","Jude","Revelation"]
-  books = ListBox(A, items=bible_books, scrollbar=True, command=on_select)
+  bible_books = {
+      "Genesis": {"num":"01"},
+      "Exodus": {"num":"02"},
+      "Leviticus": {"num":"03"},
+      "Numbers": {"num":"04"},
+      "Deuteronomy": {"num":"05"},
+      "Joshua": {"num":"06"},
+      "Judges": {"num":"07"},
+      "Ruth": {"num":"08"},
+      "1 Samuel": {"num":"09"},
+      "2 Samuel": {"num":"10"},
+      "1 King": {"num":"11"},
+      "2 King": {"num":"12"},
+      "1 Chronicles":{"num":"13"},
+      "2 Chronicles":{"num":"14"},
+      "Ezra": {"num":"15"},
+      "Nehemiah": {"num":"16"},
+      "Esther": {"num":"17"},
+      "Job": {"num":"18"},
+      "Psalms": {"num":"19"},
+      "Proverbs": {"num":"20"},
+      "Ecclesiastes": {"num":"21"},
+      "Song of Solomon": {"num":"22"},
+      "Isaiah": {"num":"23"},
+      "Jeremiah": {"num":"24"},
+      "Lamentations": {"num":"25"},
+      "Ezekiel": {"num":"26"},
+      "Daniel": {"num":"27"},
+      "Hosea": {"num":"28"},
+      "Joel": {"num":"29"},
+      "Amos": {"num":"30"},
+      "Obadiah": {"num":"31"},
+      "Jonah": {"num":"32"},
+      "Micah": {"num":"33"},
+      "Nahum": {"num":"34"},
+      "Habakkuk": {"num":"35"},
+      "Zephaniah": {"num":"36"},
+      "Haggai": {"num":"37"},
+      "Zechariah": {"num":"38"},
+      "Malachi": {"num":"39"},
+      "Matthew": {"num":"40"},
+      "Mark": {"num":"41"},
+      "Luke": {"num":"42"},
+      "John": {"num":"43"},
+      "Acts": {"num":"44"},
+      "Romans": {"num":"45"},
+      "1 Corinthians": {"num":"46"},
+      "2 Corinthians": {"num":"47"},
+      "Galatians": {"num":"48"},
+      "Ephesians": {"num":"49"},
+      "Philippians": {"num":"50"},
+      "Colossians": {"num":"51"},
+      "1 Thessalonians": {"num":"52"},
+      "2 Thessalonians": {"num":"53"},
+      "1 Timothy": {"num":"54"},
+      "2 Timothy": {"num":"55"},
+      "Titus": {"num":"56"},
+      "Philemon": {"num":"57"},
+      "Hebrews": {"num":"58"},
+      "James": {"num":"59"},
+      "1 Peter": {"num":"60"},
+      "2 Peter": {"num":"61"},
+      "1 John": {"num":"62"},
+      "2 John": {"num":"63"},
+      "3 John": {"num":"64"},
+      "Jude": {"num":"65"},
+      "Revelations": {"num":"66"}
+  }
+  books = ListBox(A, items=list(bible_books.keys()), scrollbar=True, command=on_select)
   books.bg = bC
   books.text_color = tC
   Text(A,text="Enter Book Chapter:",size=15, color=tC)
@@ -44,23 +111,47 @@ def main():
   TO_VERSE.text_color = tC
   Text(A,text="Choose Bible Edition:",size=15, color=tC)
   translations_list = {
-      "New World Translation (2013)": {"link": "nwt"},
-      "New World Translation Study Edition": {"link": "study-bible"},
-      "King James Version": {"link": "king-james-version"},
-      "American Standard Version": {"link": "american-standard-version"},
-      "Emphasized Bible (Rotherham)": {"link": "rotherham"},
-      "New World Translation (1984)": {"link": "bi12"},
-      "The Kingdom Interlinear Translation of the Greek Scriptures": {"link": "kingdom-interlinear-greek-translation"},
-      "The Bible in Living English": {"link": "byington"}
+      "New World Translation (2013)": {"link": "nwt","link_library": "nwt"},
+      "New World Translation Study Edition": {"link": "study-bible","link_library": "nwtsty"},
+      "King James Version": {"link": "king-james-version","link_library": "bi10"},
+      "American Standard Version": {"link": "american-standard-version","link_library": "bi22"},
+      "Emphasized Bible (Rotherham)": {"link": "rotherham","link_library": "rh"},
+      "New World Translation (1984, also known as Reference Bible)": {"link": "bi12","link_library": "Rbi8"},
+      "The Kingdom Interlinear Translation of the Greek Scriptures": {"link": "kingdom-interlinear-greek-translation","link_library": "int"},
+      "The Bible in Living English": {"link": "byington","link_library": "by"}
   }
   edition = Combo(A, options=list(translations_list.keys()))
   edition.bg = bC
   edition.text_color = tC
   Text(A,text="Choose Language:",size=15, color=tC)
-  lang = Combo(A, options=['Local','English'])
+  lang = Combo(A, options=['English'])
   lang.bg = bC
   lang.text_color = tC
   Text(A,text=' ',size=10)
+  def check_values():
+      def errmsg(rsn):
+          A.error("Error", text=rsn)
+      if books.value == '':
+          errmsg("Please select a book")
+          return True
+      elif CHAPTER.value == '':
+          errmsg("Please enter a chapter")
+          return True
+      elif VERSE.value == '':
+          errmsg("Please enter a verse")
+          return True
+      if not CHAPTER.value.isdigit():
+          errmsg("Please enter a number for chapter")
+          return True
+      if not VERSE.value.isdigit():
+          errmsg("Please enter a number for verse")
+          return True
+      if not TO_VERSE.value.isdigit():
+          if TO_VERSE.value == '':
+              return False
+          else:
+              errmsg("Please enter a number for to-verse")
+              return True
   def generate_link():
     ED = ''
     cLink = ''
@@ -69,33 +160,16 @@ def main():
     ER = False
     tLink= ''
     def errmsg(rsn):
-        A.error("Error",text=rsn)
+        A.error("Error", text=rsn)
         global ER
         ER = True
-    if books.value == '':
-      errmsg("Please select a book")
-    elif CHAPTER.value == '':
-      errmsg("Please enter a chapter")
-    elif VERSE.value == '':
-      errmsg("Please enter a verse")
-    if not CHAPTER.value.isdigit():
-        errmsg("Please enter a number for chapter")
-    if not VERSE.value.isdigit():
-        errmsg("Please enter a number for verse")
-    if not TO_VERSE.value.isdigit():
-        if TO_VERSE.value == '':
-            pass
-        else:
-            errmsg("Please enter a number for to-verse")
-    #elif edition.value == '':
-    #  errmsg("Please select an edition")
-    #elif lang.value == '':
-    #  errmsg("Please select a language")
+    ER = check_values()
     link='https://www.jw.org/en/library/bible/'
     if edition.value in translations_list.keys():
         ED = translations_list[edition.value].get('link')
     else:
-        errmsg("An unexpected error occurred, try to select a translation")
+        errmsg("Translation is not available for JW.ORG")
+        ER = True
     selected_book = books.value if books.value else ""
     selected_book = str(selected_book).lower()
     count = 1
@@ -134,19 +208,68 @@ def main():
       o.bg = bC
       o.text_color = tC
     if ER is True:
-        print(str(ER))
         pass
-  gl = PushButton(A,text='Generate JW.ORG Link',command=generate_link)
+  def generate_library_link():
+      ED = ''
+      cLink = ''
+      vLink = ''
+      TO_VERSE.value = ''
+      global ER, bible_books_num
+      ER = False
+      ER = check_values()
+      def errmsg(rsn):
+          A.error("Error", text=rsn)
+          global ER
+          ER = True
+      link = 'https://www.jw.org/finder?srcid=jwlshare&wtlocale=E&prefer=lang&bible='
+      if edition.value in translations_list.keys():
+          ED = translations_list[edition.value].get('link_library')
+      else:
+          errmsg("Translation is not available for JW Library")
+          ER = True
+      if len(str(CHAPTER.value)) == 2:
+          cLink = "0" + str(CHAPTER.value)
+      if len(str(CHAPTER.value)) == 1:
+          cLink = "00" + str(CHAPTER.value)
+      if len(str(VERSE.value)) == 2:
+          vLink = "0" + str(VERSE.value)
+      if len(str(VERSE.value)) == 1:
+          vLink = "00" + str(VERSE.value)
+      if books.value in bible_books.keys():
+          bible_books_num = bible_books[books.value].get('num')
+      else:
+          errmsg("An unexpected error occurred, try selecting a book again")
+          ER = True
+      link = link + str(bible_books_num) + str(cLink) + str(vLink) + '&pub=' + str(ED)
+      if ER is False:
+          W = Window(A, title="Generated Link", width=400, height=400)
+          W.bg = gC
+          Text(W, text="Generated Link", size=30, color=tC)
+          l = TextBox(W, text=link, multiline=True, width=50, height=10, enabled=False)
+          l.bg = bC
+          l.text_color = tC
+          def open_link(url):
+              webbrowser.open(url)
+          o = PushButton(W, text="Open", command=open_link, args=[link])
+          o.bg = bC
+          o.text_color = tC
+      if ER is True:
+          print('err' + str(ER))
+          pass
+  gl = PushButton(A,text='Generate JW.ORG Link',padx=16,command=generate_link)
   gl.bg = bC
   gl.text_color = tC
+  gll = PushButton(A,text='Generate JW Library Link',command=generate_library_link)
+  gll.bg = bC
+  gll.text_color = tC
   def example():
-    books.value = "Revelation"
+    books.value = "Revelations"
     CHAPTER.value = "21"
     VERSE.value = "3"
     TO_VERSE.value = "4"
     edition.value = "New World Translation Study Edition"
-    lang.value = "Local"
-  ge = PushButton(A,text='Generate Example',command=example)
+    lang.value = "English"
+  ge = PushButton(A,text='Generate Example',padx=27,command=example)
   ge.bg = bC
   ge.text_color = tC
   A.display()
